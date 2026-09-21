@@ -1,0 +1,23 @@
+{% extends "library/base.html" %}
+{% block title %}All Books{% endblock  %}
+
+{% block content %}
+
+    <h2 class="mb-4"><iclass="bi bi-collection">Our Library</i></h2>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <input type="text" 
+                    name="q"
+                    class="form-control form-control-lg"
+                    placeholder="বইয়ের নাম দিয়ে খুঁজুন..."
+                    hx-get="{% url "book_search" %}"
+                    hx-trigger="keyup changed delya:300ms"
+                    hx-target="#book-list">
+        </div>
+    </div>
+
+    <div id="book-list" class="row">
+        {% include "library/_book_cards.html" %}
+    </div>
+{% endblock  %}

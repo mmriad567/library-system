@@ -1,0 +1,56 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image.url }}" class="img-fluid rounded shadow-sm" alt="{{ book.title }}">
+            {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                    <i class="bi bi-book" style="font-size: 5rem;"></i>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1>{{ book.title }}</h1>
+            <p class="text-muted">
+                {% for author in book.authors.all %}
+                    {{ author.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            <hr>
+
+            <dl class="row">
+                <dt class="col-sm-3">ISBN</dt>
+                <dd class="col-sm-9">{{ book.isbn }}</dd>
+
+                <dt class="col-sm-3">প্রকাশক</dt>
+                <dd class="col-sm-9">{{ book.publisher|default:"-" }}</dd>
+
+                <dt class="col-sm-3">প্রকাশ সাল</dt>
+                <dd class="col-sm-9">{{ book.published_year|default:"-" }}</dd>
+
+                <dt class="col-sm-3">মোট কপি</dt>
+                <dd class="col-sm-9">{{ book.total_copies }}</dd>
+
+                <dt class="col-sm-3">উপলব্ধ</dt>
+                <dd class="col-sm-9">
+                    {% if book.is_available %}
+                        <span class="badge bg-success">{{ book.available_copies }} কপি</span>
+                    {% else %}
+                        <span class="badge bg-danger">কোনো কপি নেই</span>
+                    {% endif %}
+                </dd>
+            </dl>
+
+            <p>{{ book.description|default:"বর্ণনা নেই"|linebreaksbr }}</p>
+
+            <a href="{% url 'book_list' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> তালিকায় ফিরুন
+            </a>
+        </div>
+    </div>
+{% endblock %}
