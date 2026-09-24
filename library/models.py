@@ -69,3 +69,16 @@ class Borrow(models.Model):
         if self.is_returned:
             return False
         return timezone.now().date() > self.due_date
+
+    @property
+    def days_late(self):
+        from django.utils import timezone
+        end_date=self.return_date if self.is_returned else timezone.now().date()
+        if end_date > self.due_date:
+            return (end_date - self.due_date).days
+        return 0
+
+    @property
+    def current_fine(self):
+        return self.days_late * 5
+    

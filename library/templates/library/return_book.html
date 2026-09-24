@@ -1,0 +1,42 @@
+{% extends 'library/base.html' %}
+
+{% block title %}বই ফেরত{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">📥 বই ফেরত নিন</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">{{ borrow.book.title }}</h5>
+            <p class="text-muted mb-2">সদস্য: {{ borrow.member.name }}</p>
+
+            <dl class="row mb-3">
+                <dt class="col-sm-4">ইস্যুর তারিখ</dt>
+                <dd class="col-sm-8">{{ borrow.borrow_date }}</dd>
+
+                <dt class="col-sm-4">ফেরতের ডেডলাইন</dt>
+                <dd class="col-sm-8">{{ borrow.due_date }}</dd>
+            </dl>
+
+            
+                {% if borrow.is_overdue %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        বইটি <strong>{{ borrow.due_date }}</strong> তারিখে ফেরত দেওয়ার কথা ছিল।
+                        দেরি হয়েছে <strong>{{ borrow.days_late }} দিন</strong>। জরিমানা হবে <strong>{{ borrow.current_fine }} টাকা</strong>।
+                    </div>
+
+            {% else %}
+                <div class="alert alert-success">
+                    <i class="bi bi-check-circle"></i> সময়মতো ফেরত দেওয়া হচ্ছে। কোনো জরিমানা নেই।
+                </div>
+            {% endif %}
+
+            <form method="post" class="d-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">হ্যাঁ, ফেরত নিন</button>
+            </form>
+            <a href="{% url 'borrow_list' %}" class="btn btn-secondary">বাতিল</a>
+        </div>
+    </div>
+{% endblock %}

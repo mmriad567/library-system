@@ -14,6 +14,12 @@
             <a class="navbar-brand" href="{% url 'book_list' %}">
                 <i class="bi bi-book"></i> লাইব্রেরি
             </a>
+            <div class="d-flex">
+    <a href="{% url 'book_list' %}" class="nav-link text-white me-3">বই</a>
+    {% if user.is_staff %}
+        <a href="{% url 'borrow_list' %}" class="nav-link text-white">চলমান ইস্যু</a>
+    {% endif %}
+</div>
         </div>
     </nav>
 

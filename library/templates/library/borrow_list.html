@@ -1,0 +1,59 @@
+{% extends 'library/base.html' %}
+
+{% block title %}চলমান ইস্যু{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📋 চলমান ইস্যু</h2>
+        <a href="{% url 'book_list' %}" class="btn btn-outline-primary">
+            <i class="bi bi-book"></i> বই দেখুন
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>বই</th>
+                        <th>সদস্য</th>
+                        <th>ইস্যু</th>
+                        <th>ডেডলাইন</th>
+                        <th>স্ট্যাটাস</th>
+                        <th>জরিমানা</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in borrows %}
+                        <tr {% if b.is_overdue %}class="table-danger"{% endif %}>
+                            <td>{{ b.book.title }}</td>
+                            <td>{{ b.member.name }}</td>
+                            <td>{{ b.borrow_date }}</td>
+                            <td>{{ b.due_date }}</td>
+                            <td>
+                                {% if b.is_overdue %}
+                                    <span class="badge bg-danger">দেরি ({{ b.days_late }} দিন)</span>
+                                {% else %}
+                                    <span class="badge bg-success">স্বাভাবিক</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ b.current_fine }} ৳</td>
+                            <td>
+                                <a href="{% url 'return_book' b.pk %}" class="btn btn-sm btn-success">
+                                    ফেরত নিন
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                এখনো কোনো বই ইস্যু করা হয়নি।
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

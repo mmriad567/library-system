@@ -1,9 +1,0 @@
-{% if items %}
-    <ul class="list-group">
-        {% for item in items %}
-            <li class="list-group-item">{{ item }}</li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <div class="alert alert-warning">"{{ query }}" এর জন্য কিছু পাওয়া যায়নি</div>
-{% endif %}

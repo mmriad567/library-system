@@ -1,0 +1,44 @@
+{% extends 'library/base.html' %}
+
+{% block title %}বই ইস্যু{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4">📚 বই ইস্যু করুন</h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ book.title }}</h5>
+            <p class="text-muted mb-0">
+                {% for author in book.authors.all %}
+                    {{ author.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p class="mt-2 mb-0">
+                <span class="badge bg-success">উপলব্ধ: {{ book.available_copies }} কপি</span>
+            </p>
+        </div>
+    </div>
+
+    <form method="post" class="card shadow-sm p-4">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="member" class="form-label">সদস্য বাছুন</label>
+            <select name="member" id="member" class="form-select" required>
+                <option value="">-- সদস্য বাছুন --</option>
+                {% for m in members %}
+                    <option value="{{ m.id }}">{{ m.name }} ({{ m.phone|default:"-" }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i>
+            বই ১৪ দিনের জন্য ইস্যু করা হবে।
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary">ইস্যু করুন</button>
+            <a href="{% url 'book_detail' book.pk %}" class="btn btn-secondary">বাতিল</a>
+        </div>
+    </form>
+{% endblock %}
